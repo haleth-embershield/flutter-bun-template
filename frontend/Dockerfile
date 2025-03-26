@@ -1,22 +1,7 @@
-FROM debian:bookworm-slim as builder
+# Build stage
+FROM ghcr.io/cirruslabs/flutter:stable AS builder
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    zip \
-    libglu1-mesa \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Flutter
-RUN git clone https://github.com/flutter/flutter.git /flutter
-ENV PATH="/flutter/bin:${PATH}"
-
-# Set Flutter channel to stable and update
-RUN flutter channel stable
-RUN flutter upgrade
+# Enable web
 RUN flutter config --enable-web
 
 # Set working directory
@@ -37,8 +22,11 @@ FROM nginx:alpine
 # Copy build files from builder stage
 COPY --from=builder /app/build/web /usr/share/nginx/html
 
+# Optional: Copy custom nginx config if you have one
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose port
 EXPOSE 80
 
 # Start nginx
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]
