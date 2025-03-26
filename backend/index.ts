@@ -48,5 +48,5 @@ const app = new Elysia()
   })
   .listen(3000);
 
-console.log(`🦊 Elysia server is running at ${app.server?.hostname}:${app.server?.port}`);
-console.log(`📚 Swagger documentation available at http://localhost:3000/swagger`);
+console.log(`Elysia server is running at ${app.server?.hostname}:${app.server?.port}`);
+console.log(`Swagger documentation available at http://localhost:3000/swagger`);
